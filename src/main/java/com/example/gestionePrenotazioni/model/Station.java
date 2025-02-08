@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,11 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    @Enumerated(EnumType.STRING)
     private StationType stationType;
     private int numMaxUsers;
+    @Column(nullable = true)
+    private LocalDate reservationDate;
 
     // più postazioni associate ad un unico building
     @ManyToOne
@@ -36,5 +40,6 @@ public class Station {
         this.numMaxUsers = numMaxUsers;
         this.building = building;
         this.reservationList = new ArrayList<Reservation>();
+        this.reservationDate = null;
     }
 }

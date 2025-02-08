@@ -11,14 +11,22 @@ import org.springframework.stereotype.Service;
 public class BuildingService {
 
     @Autowired
-    @Qualifier("building")
-    ObjectProvider<Building> buildingProvider;
+    @Qualifier("building1")
+    ObjectProvider<Building> building1Provider;
+
+    @Autowired
+    @Qualifier("building2")
+    ObjectProvider<Building> building2Provider;
 
     @Autowired
     BuildingDAORepository buildingDAO;
 
-    public Building createBuilding(){
-        return buildingProvider.getObject();
+    public Building createBuilding1(){
+        return building1Provider.getObject();
+    }
+
+    public Building createBuilding2(){
+        return building2Provider.getObject();
     }
 
     public void saveBuilding(Building b){
