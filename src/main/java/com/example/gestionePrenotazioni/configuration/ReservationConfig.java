@@ -6,9 +6,12 @@ import com.example.gestionePrenotazioni.model.Station;
 import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
+@PropertySource("application.properties")
+
 public class ReservationConfig {
 
     Faker fk = new Faker();
