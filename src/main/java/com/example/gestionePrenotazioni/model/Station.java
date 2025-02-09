@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "stations")
-@NoArgsConstructor
 @Data
 
 public class Station {
@@ -23,8 +22,6 @@ public class Station {
     @Enumerated(EnumType.STRING)
     private StationType stationType;
     private int numMaxUsers;
-    @Column(nullable = true)
-    private LocalDate reservationDate;
 
     // più postazioni associate ad un unico building
     @ManyToOne
@@ -34,12 +31,26 @@ public class Station {
     @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
     List<Reservation> reservationList;
 
+    public Station(){
+        this.reservationList = new ArrayList<Reservation>();
+    }
+
     public Station(String name, StationType stationType, int numMaxUsers, Building building) {
         this.name = name;
         this.stationType = stationType;
         this.numMaxUsers = numMaxUsers;
         this.building = building;
         this.reservationList = new ArrayList<Reservation>();
-        this.reservationDate = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Station{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", stationType=" + stationType +
+                ", numMaxUsers=" + numMaxUsers +
+                ", building=" + building.getId() +
+                '}';
     }
 }

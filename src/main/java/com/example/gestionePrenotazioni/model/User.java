@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
 @Data
 
 public class User {
@@ -27,11 +26,24 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Reservation> reservationList;
 
+    public User(){}
+
     public User(String userName, String name, String lastName, String email) {
         this.userName = userName;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.reservationList = new ArrayList<Reservation>();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

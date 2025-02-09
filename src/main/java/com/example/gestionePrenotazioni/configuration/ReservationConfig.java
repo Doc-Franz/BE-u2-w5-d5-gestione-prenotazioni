@@ -2,6 +2,7 @@ package com.example.gestionePrenotazioni.configuration;
 
 import com.example.gestionePrenotazioni.enumeration.StationType;
 import com.example.gestionePrenotazioni.model.Building;
+import com.example.gestionePrenotazioni.model.Reservation;
 import com.example.gestionePrenotazioni.model.Station;
 import com.example.gestionePrenotazioni.model.User;
 import com.github.javafaker.Faker;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Random;
 

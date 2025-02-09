@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "buildings")
-@NoArgsConstructor
 @Data
 
 public class Building {
@@ -24,6 +23,10 @@ public class Building {
     @OneToMany(mappedBy = "building")
     List<Station> stationList;
 
+    public Building(){
+        this.stationList = new ArrayList<Station>();
+    }
+
     public Building(String name, String address, String city) {
         this.name = name;
         this.address = address;
@@ -31,4 +34,7 @@ public class Building {
         this.stationList = new ArrayList<Station>();
     }
 
+    public long getId() {
+        return id;
+    }
 }

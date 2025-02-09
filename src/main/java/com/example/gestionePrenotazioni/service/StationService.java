@@ -3,6 +3,7 @@ package com.example.gestionePrenotazioni.service;
 import com.example.gestionePrenotazioni.enumeration.StationType;
 import com.example.gestionePrenotazioni.model.Building;
 import com.example.gestionePrenotazioni.model.Station;
+import com.example.gestionePrenotazioni.model.User;
 import com.example.gestionePrenotazioni.repository.StationDAORepository;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class StationService {
 
     public List<Station> getStationsByType(StationType stationType){
         return stationDAO.findByStationType(stationType);
+    }
+
+    // ricerca di una postazione tramite id
+    public Station getStationById(long stationId){
+        return stationDAO.findStationById(stationId);
     }
 }

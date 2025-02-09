@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "reservations")
-@NoArgsConstructor
 @Data
 
 public class Reservation {
@@ -16,6 +15,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private LocalDate reservationDate;
 
     @ManyToOne
@@ -25,6 +25,8 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
+
+    public Reservation(){}
 
     public Reservation(LocalDate reservationDate, User user, Station station) {
         this.reservationDate = reservationDate;
