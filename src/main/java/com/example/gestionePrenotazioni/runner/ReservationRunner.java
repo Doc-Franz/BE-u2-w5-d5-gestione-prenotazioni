@@ -39,9 +39,12 @@ public class ReservationRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Running...");
 
-        //generateBuilding();
-        //generateUser();
-        //generateStation();
+        // ❗❗Prima vanno fatti andare i primi 3 metodi per riempire il database e bisogna commentare makeReservation()
+        generateBuilding();
+        generateUser();
+        generateStation();
+
+        // ❗❗ Dopo aver generato il database commentare i primi 3 metodi ed attivare solamente questo metodo
         makeReservation();
 
     }
@@ -75,16 +78,20 @@ public class ReservationRunner implements CommandLineRunner {
     public void generateReservation(LocalDate reservationDate, User user, Station station){
 
         // verificare se esiste già una prenotazione effettuata dall'utente in quella data
-        List<Reservation> reservationList = reservationService.getReservationsByUserAndDate(user, reservationDate);
-        if (reservationList.isEmpty()){
+        List<Reservation> reservationListByDate = reservationService.getReservationsByUserAndDate(user, reservationDate);
+        List<Reservation> reservationListByStation = reservationService.getReservationsByStationAndDate(station, reservationDate);
+        if (reservationListByDate.isEmpty() && reservationListByStation.isEmpty()){
             reservationService.saveReservation(reservationService.createReservation(reservationDate, user, station));
             System.out.println("Prenotazione delle postazione effettuato correttamente!");
         } else {
-            System.out.println("Esiste già una prenotazione effettuata dall'utente per questa data");
+            System.out.println("Esiste già una prenotazione effettuata per questa data");
         }
     }
 
     public void makeReservation(){
+        System.out.println("Questo è l'elenco di tutte le postazioni");
+        List<Station> stationList = stationService.getAllStations();
+        stationList.forEach(System.out::println);
         System.out.println("Di che tipo di postazione hai bisogno?");
         System.out.println("-1- postazione privata");
         System.out.println("-2- openspace");
@@ -102,6 +109,7 @@ public class ReservationRunner implements CommandLineRunner {
                     System.out.println("Elenco delle postazioni private:");
                     privateStations.forEach(System.out::println);
                     notValidValue = false;
+                    chooseCity(privateStations);
                     break;
                 }
                 case "2": {
@@ -109,6 +117,7 @@ public class ReservationRunner implements CommandLineRunner {
                     System.out.println("Elenco delle postazioni openspace:");
                     openSpaceStations.forEach(System.out::println);
                     notValidValue = false;
+                    chooseCity(openSpaceStations);
                     break;
                 }
                 case "3": {
@@ -116,11 +125,28 @@ public class ReservationRunner implements CommandLineRunner {
                     System.out.println("Elenco delle postazioni conference room:");
                     conferenceRoomStations.forEach(System.out::println);
                     notValidValue = false;
+                    chooseCity(conferenceRoomStations);
                     break;
                 }
                 default:
                     System.out.println("Inserire un valore valido");
             }
+        }
+    }
+
+    // metodo che gestisce la scelta della città
+    public void chooseCity(List<Station> stationList){
+        System.out.println("");
+        System.out.println("In che città intendi prenotare questo tipo di postazione?");
+        String city = sc.nextLine();
+        List<Station> cityStations = stationList.stream()
+                .filter(station -> station.getCity().equalsIgnoreCase(city))
+                .toList();
+        System.out.println("Questo è l'elenco delle postazioni nella città " + city);
+        cityStations.forEach(System.out::println);
+        if (cityStations.isEmpty()) {
+            System.out.println("Nessuna postazione disponibile nella città: " + city);
+            return;
         }
         chooseUserAndStation();
     }
@@ -129,6 +155,13 @@ public class ReservationRunner implements CommandLineRunner {
     public void chooseUserAndStation(){
         boolean wantToContinue = true;
         while (wantToContinue){
+            // selezione della postazione
+            System.out.println("");
+            System.out.println("Digita l'id della postazione che intendi prenotare:");
+            long stationId = Long.parseLong(sc.nextLine());
+            Station station = stationService.getStationById(stationId);
+            System.out.println("La postazione selezionata è " + station);
+
             System.out.println("");
             System.out.println("Questo è l'elenco degli utenti che possono prenotare la postazione:");
             userService.showUserList();
@@ -138,12 +171,6 @@ public class ReservationRunner implements CommandLineRunner {
             long userId = Long.parseLong(sc.nextLine());
             User user = userService.getUserById(userId);
             System.out.println("L'utente selezionato è " + user);
-
-            // selezione della postazione
-            System.out.println("Digita l'id della postazione che intendi prenotare:");
-            long stationId = Long.parseLong(sc.nextLine());
-            Station station = stationService.getStationById(stationId);
-            System.out.println("La postazione selezionata è " + station);
 
             // selezione della data
             System.out.println("Digita la data (yyyy-mm-dd) in cui intendi prenotare la postazione: ");

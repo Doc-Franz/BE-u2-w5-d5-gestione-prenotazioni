@@ -37,4 +37,8 @@ public class Building {
     public long getId() {
         return id;
     }
+
+    public String getCity() {
+        return city;
+    }
 }

@@ -19,15 +19,21 @@ public class ReservationService {
     @Autowired
     ReservationDAORepository reservationDAO;
 
-    public Reservation createReservation(LocalDate reservationDate, User user, Station station){
+    public Reservation createReservation(LocalDate reservationDate, User user, Station station) {
         return new Reservation(reservationDate, user, station);
     }
 
-    public void saveReservation(Reservation r){
+    public void saveReservation(Reservation r) {
         reservationDAO.save(r);
     }
 
-    public List<Reservation> getReservationsByUserAndDate(User user, LocalDate reservationDate){
+    // verifica che un utente non possa prenotare un'altra postazione nella stessa data
+    public List<Reservation> getReservationsByUserAndDate(User user, LocalDate reservationDate) {
         return reservationDAO.findByUserAndReservationDate(user, reservationDate);
+    }
+
+    // verifica che non si possa prenotare nella stessa postazione alla stessa data
+    public List<Reservation> getReservationsByStationAndDate(Station station, LocalDate reservationDate) {
+        return reservationDAO.findByStationAndReservationDate(station, reservationDate);
     }
 }

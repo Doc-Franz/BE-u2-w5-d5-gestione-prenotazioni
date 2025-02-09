@@ -39,8 +39,19 @@ public class StationService {
         stationDAO.save(s);
     }
 
+    // ricerca di tutte le postazioni
+    public List<Station> getAllStations(){
+        return stationDAO.findAll();
+    }
+
+    // ricerca di una postazione tramite il tipo
     public List<Station> getStationsByType(StationType stationType){
         return stationDAO.findByStationType(stationType);
+    }
+
+    // ricerca di una postazione tramite la città
+    public List<Station> getStationByCity(String city){
+        return stationDAO.findStationByCity(city);
     }
 
     // ricerca di una postazione tramite id

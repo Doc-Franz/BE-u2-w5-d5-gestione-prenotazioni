@@ -28,6 +28,8 @@ public class Station {
     @JoinColumn(name = "building_id")
     private Building building;
 
+    private String city;
+
     @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
     List<Reservation> reservationList;
 
@@ -41,6 +43,11 @@ public class Station {
         this.numMaxUsers = numMaxUsers;
         this.building = building;
         this.reservationList = new ArrayList<Reservation>();
+        this.city = building.getCity();
+    }
+
+    public String getCity() {
+        return city;
     }
 
     @Override
@@ -51,6 +58,7 @@ public class Station {
                 ", stationType=" + stationType +
                 ", numMaxUsers=" + numMaxUsers +
                 ", building=" + building.getId() +
+                ", city=" + city +
                 '}';
     }
 }
